@@ -3,11 +3,13 @@ import Alert from 'react-bootstrap/Alert';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ListGroup from "react-bootstrap/ListGroup";
 
-import UserList from './UserList'
+import UserList from './UserList';
+import UserDetail from './UserDetails';
 
-import { userService } from '../../_services'; 
+import { userService } from '../../_services';
+
+import { StyledAddressBook } from './styled';
 
 function AddressBook() {
   const [users, setUsers] = useState([]);
@@ -32,31 +34,19 @@ function AddressBook() {
   }, []);
 
   return (
-    <div className="App">
-      { !hasError && 
-        <Container className="col-12 mt-3">
-          <Row>
-            <Col>
-              <UserList users={users} setUser={setUser} />
-            </Col>
-            <Col>
-              <ListGroup>
-                <ListGroup.Item>
-                  { user && user?.name &&
-                    <h2>{user.name.first} - {user.name.last}</h2>
-                  }
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-          </Row>
-        </Container>
-      }
+    <>
       { hasError &&
         <Alert variant="danger">
           { errorMessage }
         </Alert>
       }
-    </div>
+      { !hasError && 
+          <StyledAddressBook>
+            <UserList users={users} setUser={setUser} />
+            <UserDetail user={user} />
+          </StyledAddressBook>
+      }
+    </>
   );
 }
 
